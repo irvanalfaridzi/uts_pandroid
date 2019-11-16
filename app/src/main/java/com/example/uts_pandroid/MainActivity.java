@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -22,6 +23,12 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase db;
     String kd, nm, st, hb, hj, dsk;
     int x;
+    String kode11[];
+    String nama11[];
+    String satuan11[];
+    String hbeli11[];
+    String hjual11[];
+    String diskon11[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
         db=openOrCreateDatabase(dbname,MODE_PRIVATE,null);
         Cursor c = db.rawQuery("select * from barang", null);
-        final String kode11[] = new String[c.getCount()];
-        String nama11[] = new String[c.getCount()];
-        String satuan11[] = new String[c.getCount()];
-        String hbeli11[] = new String[c.getCount()];
-        String hjual11[] = new String[c.getCount()];
-        String diskon11[] = new String[c.getCount()];
+        kode11 = new String[c.getCount()];
+        nama11 = new String[c.getCount()];
+        satuan11 = new String[c.getCount()];
+        hbeli11 = new String[c.getCount()];
+        hjual11 = new String[c.getCount()];
+        diskon11 = new String[c.getCount()];
         x=1;
         c.moveToFirst();
         kode11[0] = c.getString(c.getColumnIndex("kode"));
@@ -85,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
 
             db.execSQL("insert into barang values('"+ kd+"','"+ nm +"','"+ st +"','"+ hb +"','"+ hj +"','"+ dsk +"');");
             Cursor c = db.rawQuery("select * from barang", null);
-                String kode11[] = new String[c.getCount()];
-                String nama11[] = new String[c.getCount()];
-                String satuan11[] = new String[c.getCount()];
-                String hbeli11[] = new String[c.getCount()];
-                String hjual11[] = new String[c.getCount()];
-                String diskon11[] = new String[c.getCount()];
+                kode11 = new String[c.getCount()];
+                nama11 = new String[c.getCount()];
+                satuan11 = new String[c.getCount()];
+                hbeli11 = new String[c.getCount()];
+                hjual11 = new String[c.getCount()];
+                diskon11 = new String[c.getCount()];
                 x=1;
                     c.moveToFirst();
                 kode11[0] = c.getString(c.getColumnIndex("kode"));
@@ -130,12 +137,12 @@ public class MainActivity extends AppCompatActivity {
 
                 db.execSQL("update barang set nama = '"+ nm +"',satuan = '"+ st +"', hbeli = '"+ hb +"', hjual = '"+ hj +"', diskon = '"+ dsk +"' where kode = '"+ kd +"';");
                 Cursor c = db.rawQuery("select * from barang", null);
-                String kode11[] = new String[c.getCount()];
-                String nama11[] = new String[c.getCount()];
-                String satuan11[] = new String[c.getCount()];
-                String hbeli11[] = new String[c.getCount()];
-                String hjual11[] = new String[c.getCount()];
-                String diskon11[] = new String[c.getCount()];
+                kode11 = new String[c.getCount()];
+                nama11 = new String[c.getCount()];
+                satuan11 = new String[c.getCount()];
+                hbeli11 = new String[c.getCount()];
+                hjual11 = new String[c.getCount()];
+                diskon11 = new String[c.getCount()];
                 x=1;
                 c.moveToFirst();
                 kode11[0] = c.getString(c.getColumnIndex("kode"));
@@ -175,12 +182,12 @@ public class MainActivity extends AppCompatActivity {
 
                 db.execSQL("delete from barang where kode = '"+ kd +"';");
                 Cursor c = db.rawQuery("select * from barang", null);
-                String kode11[] = new String[c.getCount()];
-                String nama11[] = new String[c.getCount()];
-                String satuan11[] = new String[c.getCount()];
-                String hbeli11[] = new String[c.getCount()];
-                String hjual11[] = new String[c.getCount()];
-                String diskon11[] = new String[c.getCount()];
+                kode11 = new String[c.getCount()];
+                nama11 = new String[c.getCount()];
+                satuan11 = new String[c.getCount()];
+                hbeli11 = new String[c.getCount()];
+                hjual11 = new String[c.getCount()];
+                diskon11 = new String[c.getCount()];
                 x=1;
                 c.moveToFirst();
                 kode11[0] = c.getString(c.getColumnIndex("kode"));
@@ -223,21 +230,13 @@ public class MainActivity extends AppCompatActivity {
         isilist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                db=openOrCreateDatabase(dbname,MODE_PRIVATE,null);
-//                HashMap<String, Object> obj = (HashMap<String, Object>)adapterView.getItemAtPosition(i);
-//                String kodeget = (String) obj.get("kode");
-//                kode.setText(kodeget);
-//                Cursor c = db.rawQuery("select * from barang where kode = '"+ kd +"';", null);
-//                nm = c.getString(c.getColumnIndex("nama"));
-//                st = c.getString(c.getColumnIndex("satuan"));
-//                hb = c.getString(c.getColumnIndex("hbeli"));
-//                hj = c.getString(c.getColumnIndex("hjual"));
-//                dsk = c.getString(c.getColumnIndex("diskon"));
-//                kode.setText(kd);
-//                nama.setText(st);
-//                hbeli.setText(hb);
-//                hjual.setText(hj);
-//                diskon.setText(dsk);
+                Toast.makeText(MainActivity.this, kode11[i], Toast.LENGTH_SHORT).show();
+                kode.setText(kode11[i]);
+                nama.setText(nama11[i]);
+                satuan.setText(satuan11[i]);
+                hbeli.setText(hbeli11[i]);
+                hjual.setText(hjual11[i]);
+                diskon.setText(diskon11[i]);
                 update.setEnabled(true);
                 delete.setEnabled(true);
             }
