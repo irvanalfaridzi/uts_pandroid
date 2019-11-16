@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+//    inisialisasi setting variabel
     static String dbname="stok.db";
     EditText kode, nama, satuan, hbeli, hjual, diskon;
     Button simpan, update, delete, clear;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        manggil di activity_main.xml edtitext dkk
         kode = (EditText)findViewById(R.id.etKode);
         nama = (EditText)findViewById(R.id.etNama);
         satuan = (EditText)findViewById(R.id.etSatuan);
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         delete = (Button)findViewById(R.id.btnHapus);
         clear = (Button)findViewById(R.id.btnClear);
 
+//        munculno data
         db=openOrCreateDatabase(dbname,MODE_PRIVATE,null);
         Cursor c = db.rawQuery("select * from barang", null);
         kode11 = new String[c.getCount()];
@@ -76,13 +79,18 @@ public class MainActivity extends AppCompatActivity {
         db.close();
         Ngisine xx = new Ngisine(getApplication(),kode11, nama11, satuan11, hbeli11, hjual11, diskon11);
         isilist.setAdapter(xx);
+//munculno data akhir
 
+//        tombol simpan
         simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//           buka database
             db=openOrCreateDatabase(dbname,MODE_PRIVATE,null);
+//            create database (membuat)
             db.execSQL("CREATE table if not exists barang(kode varchar(20), nama varchar(20), satuan varchar(100),hbeli varchar(100), hjual varchar(100), diskon varchar(100));");
 
+//            masukkan nilai yang ada di edittext
             kd = kode.getText().toString();
             nm = nama.getText().toString();
             st = satuan.getText().toString();
@@ -90,7 +98,9 @@ public class MainActivity extends AppCompatActivity {
             hj = hjual.getText().toString();
             dsk = diskon.getText().toString();
 
+//            insert data ke database
             db.execSQL("insert into barang values('"+ kd+"','"+ nm +"','"+ st +"','"+ hb +"','"+ hj +"','"+ dsk +"');");
+//            cursor
             Cursor c = db.rawQuery("select * from barang", null);
                 kode11 = new String[c.getCount()];
                 nama11 = new String[c.getCount()];
