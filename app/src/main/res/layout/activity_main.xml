@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/llTabel"
+        android:orientation="vertical"
+        android:layout_width="480dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvKode"
+                android:text="Kode"
+                android:textAlignment="center"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvNama"
+                android:text="Nama"
+                android:textAlignment="center"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvSatuan"
+                android:text="Qty"
+                android:textAlignment="center"
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvHargaBeli"
+                android:text="Harga Beli"
+                android:textAlignment="center"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvHargaJual"
+                android:text="Harga Jual"
+                android:textAlignment="center"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvDiskon"
+                android:text="Diskon"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+            <ListView
+                android:id="@+id/isi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="Invalid"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llInputan"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/JudulInputan"
+            android:text="Inputan"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="270dp">
+            <EditText
+                android:id="@+id/etKode"
+                android:hint="Masukkan Kode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/etNama"
+                android:hint="Masukkan Nama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/etSatuan"
+                android:hint="Masukkan Satuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/etHargaBeli"
+                android:hint="Masukkan Harga Beli"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/etHargaJual"
+                android:hint="Masukkan Harga Jual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/etDiskon"
+                android:hint="Masukkan Diskon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        <Button
+            android:id="@+id/btnSimpan"
+            android:text="S"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnHapus"
+                android:text="D"
+                android:enabled="false"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnUpdate"
+                android:text="U"
+                android:enabled="false"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnClear"
+                android:text="C"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
