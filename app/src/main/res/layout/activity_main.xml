@@ -81,50 +81,57 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:orientation="vertical"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="270dp">
-            <EditText
-                android:id="@+id/etKode"
-                android:hint="Masukkan Kode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            android:layout_height="240dp">
 
-            <EditText
-                android:id="@+id/etNama"
-                android:hint="Masukkan Nama"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="270dp">
+                <EditText
+                    android:id="@+id/etKode"
+                    android:hint="Masukkan Kode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <EditText
-                android:id="@+id/etSatuan"
-                android:hint="Masukkan Satuan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/etNama"
+                    android:hint="Masukkan Nama"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <EditText
-                android:id="@+id/etHargaBeli"
-                android:hint="Masukkan Harga Beli"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/etSatuan"
+                    android:hint="Masukkan Satuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-            <EditText
-                android:id="@+id/etHargaJual"
-                android:hint="Masukkan Harga Jual"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:id="@+id/etDiskon"
-                android:hint="Masukkan Diskon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/etHargaBeli"
+                    android:hint="Masukkan Harga Beli"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/etHargaJual"
+                    android:hint="Masukkan Harga Jual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <EditText
+                    android:id="@+id/etDiskon"
+                    android:hint="Masukkan Diskon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </ScrollView>
+
+
 
         <LinearLayout
             android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
         <Button
             android:id="@+id/btnSimpan"
             android:text="S"
