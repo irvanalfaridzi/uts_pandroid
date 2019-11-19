@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 //    inisialisasi setting variabel
     static String dbname="stok.db";
     EditText kode, nama, satuan, hbeli, hjual, diskon;
+    TextView hasilh;
     Button simpan, update, delete, clear;
     ListView isilist;
     SQLiteDatabase db;
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     String nama11[];
     String satuan11[];
     String hbeli11[];
-    String hjual11[];
+    int hjual11[];
     String diskon11[];
 
     @Override
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         hjual = (EditText)findViewById(R.id.etHargaJual);
         diskon = (EditText)findViewById(R.id.etDiskon);
         isilist = (ListView)findViewById(R.id.isi);
+        hasilh = (TextView)findViewById(R.id.tvHasil);
 
         simpan = (Button)findViewById(R.id.btnSimpan);
         update = (Button)findViewById(R.id.btnUpdate);
@@ -57,28 +60,32 @@ public class MainActivity extends AppCompatActivity {
         nama11 = new String[c.getCount()];
         satuan11 = new String[c.getCount()];
         hbeli11 = new String[c.getCount()];
-        hjual11 = new String[c.getCount()];
+        hjual11 = new int[c.getCount()];
         diskon11 = new String[c.getCount()];
+        int hasil = 0;
         x=1;
         c.moveToFirst();
         kode11[0] = c.getString(c.getColumnIndex("kode"));
         nama11[0] = c.getString(c.getColumnIndex("nama"));
         satuan11[0] = c.getString(c.getColumnIndex("satuan"));
         hbeli11[0] = c.getString(c.getColumnIndex("hbeli"));
-        hjual11[0] = c.getString(c.getColumnIndex("hjual"));
+        hjual11[0] = c.getInt(c.getColumnIndex("hjual"));
         diskon11[0] = c.getString(c.getColumnIndex("diskon"));
         while(c.moveToNext()){
             kode11[x] = c.getString(c.getColumnIndex("kode"));
             nama11[x] = c.getString(c.getColumnIndex("nama"));
             satuan11[x] = c.getString(c.getColumnIndex("satuan"));
             hbeli11[x] = c.getString(c.getColumnIndex("hbeli"));
-            hjual11[x] = c.getString(c.getColumnIndex("hjual"));
+            hjual11[x] = c.getInt(c.getColumnIndex("hjual"));
             diskon11[x] = c.getString(c.getColumnIndex("diskon"));
+            hasil = hasil + hjual11[x];
             x = x+1;
         }
         db.close();
         Ngisine xx = new Ngisine(getApplication(),kode11, nama11, satuan11, hbeli11, hjual11, diskon11);
         isilist.setAdapter(xx);
+        hasilh.setText(String.valueOf(hasil));
+
 //munculno data akhir
 
 //        tombol simpan
@@ -106,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 nama11 = new String[c.getCount()];
                 satuan11 = new String[c.getCount()];
                 hbeli11 = new String[c.getCount()];
-                hjual11 = new String[c.getCount()];
+                hjual11 = new int[c.getCount()];
                 diskon11 = new String[c.getCount()];
                 x=1;
                     c.moveToFirst();
@@ -114,14 +121,14 @@ public class MainActivity extends AppCompatActivity {
                 nama11[0] = c.getString(c.getColumnIndex("nama"));
                 satuan11[0] = c.getString(c.getColumnIndex("satuan"));
                 hbeli11[0] = c.getString(c.getColumnIndex("hbeli"));
-                hjual11[0] = c.getString(c.getColumnIndex("hjual"));
+                hjual11[0] = c.getInt(c.getColumnIndex("hjual"));
                 diskon11[0] = c.getString(c.getColumnIndex("diskon"));
                 while(c.moveToNext()){
                     kode11[x] = c.getString(c.getColumnIndex("kode"));
                     nama11[x] = c.getString(c.getColumnIndex("nama"));
                     satuan11[x] = c.getString(c.getColumnIndex("satuan"));
                     hbeli11[x] = c.getString(c.getColumnIndex("hbeli"));
-                    hjual11[x] = c.getString(c.getColumnIndex("hjual"));
+                    hjual11[x] = c.getInt(c.getColumnIndex("hjual"));
                     diskon11[x] = c.getString(c.getColumnIndex("diskon"));
                 x = x+1;
                 }
@@ -151,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 nama11 = new String[c.getCount()];
                 satuan11 = new String[c.getCount()];
                 hbeli11 = new String[c.getCount()];
-                hjual11 = new String[c.getCount()];
+                hjual11 = new int[c.getCount()];
                 diskon11 = new String[c.getCount()];
                 x=1;
                 c.moveToFirst();
@@ -159,14 +166,14 @@ public class MainActivity extends AppCompatActivity {
                 nama11[0] = c.getString(c.getColumnIndex("nama"));
                 satuan11[0] = c.getString(c.getColumnIndex("satuan"));
                 hbeli11[0] = c.getString(c.getColumnIndex("hbeli"));
-                hjual11[0] = c.getString(c.getColumnIndex("hjual"));
+                hjual11[0] = c.getInt(c.getColumnIndex("hjual"));
                 diskon11[0] = c.getString(c.getColumnIndex("diskon"));
                 while(c.moveToNext()){
                     kode11[x] = c.getString(c.getColumnIndex("kode"));
                     nama11[x] = c.getString(c.getColumnIndex("nama"));
                     satuan11[x] = c.getString(c.getColumnIndex("satuan"));
                     hbeli11[x] = c.getString(c.getColumnIndex("hbeli"));
-                    hjual11[x] = c.getString(c.getColumnIndex("hjual"));
+                    hjual11[x] = c.getInt(c.getColumnIndex("hjual"));
                     diskon11[x] = c.getString(c.getColumnIndex("diskon"));
                     x = x+1;
                 }
@@ -196,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 nama11 = new String[c.getCount()];
                 satuan11 = new String[c.getCount()];
                 hbeli11 = new String[c.getCount()];
-                hjual11 = new String[c.getCount()];
+                hjual11 = new int[c.getCount()];
                 diskon11 = new String[c.getCount()];
                 x=1;
                 c.moveToFirst();
@@ -204,14 +211,14 @@ public class MainActivity extends AppCompatActivity {
                 nama11[0] = c.getString(c.getColumnIndex("nama"));
                 satuan11[0] = c.getString(c.getColumnIndex("satuan"));
                 hbeli11[0] = c.getString(c.getColumnIndex("hbeli"));
-                hjual11[0] = c.getString(c.getColumnIndex("hjual"));
+                hjual11[0] = c.getInt(c.getColumnIndex("hjual"));
                 diskon11[0] = c.getString(c.getColumnIndex("diskon"));
                 while(c.moveToNext()){
                     kode11[x] = c.getString(c.getColumnIndex("kode"));
                     nama11[x] = c.getString(c.getColumnIndex("nama"));
                     satuan11[x] = c.getString(c.getColumnIndex("satuan"));
                     hbeli11[x] = c.getString(c.getColumnIndex("hbeli"));
-                    hjual11[x] = c.getString(c.getColumnIndex("hjual"));
+                    hjual11[x] = c.getInt(c.getColumnIndex("hjual"));
                     diskon11[x] = c.getString(c.getColumnIndex("diskon"));
                     x = x+1;
                 }
@@ -245,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 nama.setText(nama11[i]);
                 satuan.setText(satuan11[i]);
                 hbeli.setText(hbeli11[i]);
-                hjual.setText(hjual11[i]);
+                hjual.setText(String.valueOf(hjual11[i]));
                 diskon.setText(diskon11[i]);
                 update.setEnabled(true);
                 delete.setEnabled(true);
