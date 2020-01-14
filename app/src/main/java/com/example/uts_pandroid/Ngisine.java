@@ -13,12 +13,12 @@ public class Ngisine extends BaseAdapter {
     String kode[];
     String nama[];
     String satuan[];
-    String hargabeli[];
-    int hargajual[];
-    String diskon[];
+    Integer hargabeli[];
+    Integer hargajual[];
+    Integer diskon[];
     LayoutInflater y;
 
-    public Ngisine(Context x, String kode[], String nama[], String satuan[], String hargabeli[], int hargajual[], String diskon[]){
+    public Ngisine(Context x, String kode[], String nama[], String satuan[], Integer hargabeli[], Integer hargajual[], Integer diskon[]){
         this.x = x;
         this.kode = kode;
         this.nama = nama;
@@ -56,9 +56,9 @@ public class Ngisine extends BaseAdapter {
         kode1.setText(kode[i]);
         nama1.setText(nama[i]);
         satuan1.setText(satuan[i]);
-        hargabeli1.setText(hargabeli[i]);
+        hargabeli1.setText(String.valueOf(hargabeli[i]));
         hargajual1.setText(String.valueOf(hargajual[i]));
-        diskon1.setText(diskon[i]);
+        diskon1.setText(String.valueOf(diskon[i]));
         return view;
     }
 }

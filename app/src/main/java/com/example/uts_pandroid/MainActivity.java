@@ -1,10 +1,8 @@
 package com.example.uts_pandroid;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,7 +11,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.HashMap;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,12 +36,14 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase db;
     String kd, nm, st, hb, hj, dsk;
     int x;
-    String kode11[];
-    String nama11[];
-    String satuan11[];
-    String hbeli11[];
-    int hjual11[];
-    String diskon11[];
+    String kode1[];
+    String nama1[];
+    String satuan1[];
+    Integer hjual1[];
+    Integer hbeli1[];
+    Integer diskon1[];
+    String alamaturl = "http://192.168.100.126/android/apiAndroid/index.php";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,180 +65,138 @@ public class MainActivity extends AppCompatActivity {
         delete = (Button)findViewById(R.id.btnHapus);
         clear = (Button)findViewById(R.id.btnClear);
 
-//        munculno data
-        db=openOrCreateDatabase(dbname,MODE_PRIVATE,null);
-        Cursor c = db.rawQuery("select * from barang", null);
-        kode11 = new String[c.getCount()];
-        nama11 = new String[c.getCount()];
-        satuan11 = new String[c.getCount()];
-        hbeli11 = new String[c.getCount()];
-        hjual11 = new int[c.getCount()];
-        diskon11 = new String[c.getCount()];
-        int hasil = 0;
-        x=1;
-        c.moveToFirst();
-        kode11[0] = c.getString(c.getColumnIndex("kode"));
-        nama11[0] = c.getString(c.getColumnIndex("nama"));
-        satuan11[0] = c.getString(c.getColumnIndex("satuan"));
-        hbeli11[0] = c.getString(c.getColumnIndex("hbeli"));
-        hjual11[0] = c.getInt(c.getColumnIndex("hjual"));
-        diskon11[0] = c.getString(c.getColumnIndex("diskon"));
-        while(c.moveToNext()){
-            kode11[x] = c.getString(c.getColumnIndex("kode"));
-            nama11[x] = c.getString(c.getColumnIndex("nama"));
-            satuan11[x] = c.getString(c.getColumnIndex("satuan"));
-            hbeli11[x] = c.getString(c.getColumnIndex("hbeli"));
-            hjual11[x] = c.getInt(c.getColumnIndex("hjual"));
-            diskon11[x] = c.getString(c.getColumnIndex("diskon"));
-            hasil = hasil + hjual11[x];
-            x = x+1;
-        }
-        db.close();
-        Ngisine xx = new Ngisine(getApplication(),kode11, nama11, satuan11, hbeli11, hjual11, diskon11);
-        isilist.setAdapter(xx);
-        hasilh.setText(String.valueOf(hasil));
+//        memunculkan data
+        final JsonObjectRequest jsantrian;
+        jsantrian = new JsonObjectRequest(Request.Method.POST, alamaturl, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        String x = response.toString();
+                        Log.d("response", x);
+                        try {
+                            JSONObject obj = new JSONObject(x);
+                            JSONArray hasil = obj.getJSONArray("rowData");
+                            int jmlData = hasil.length();
+                            String tampil;
+                            tampil = "";
+                            String kode1[] = new String[jmlData];
+                            String nama1[] = new String[jmlData];
+                            String satuan1[] = new String[jmlData];
+                            Integer hbeli1[] = new Integer[jmlData];
+                            Integer hhjual1[] = new Integer[jmlData];
+                            Integer diskon1[] = new Integer[jmlData];
+                            for (int i = 0; i < jmlData; i++) {
+                                JSONObject kumpulandata = hasil.getJSONObject(i);
+                                kode1[i] = kumpulandata.getString("kode_barang");
+                                nama1[i] = kumpulandata.getString("nama_barang");
+                                satuan1[i] = kumpulandata.getString("satuan");
+                                hbeli1[i] = kumpulandata.getInt("hbeli");
+                                hhjual1[i] = kumpulandata.getInt("hjual");
+                                diskon1[i] = kumpulandata.getInt("diskon");
+                                tampil =
+                                        tampil + "\n" + kode1 + " " + nama1 + " " + satuan1 + " " + hbeli1 + " " + hhjual1 +
+                                                " " + diskon1;
+                            }
+                            Ngisine adapter =new Ngisine(getApplication(), kode1, nama1, satuan1, hbeli1, hhjual1, diskon1);
+                            isilist.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "bro "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("response", ""+error.getMessage());
+                    }
+                });
 
-//munculno data akhir
+        final RequestQueue antrian = Volley.newRequestQueue(this);
+        antrian.add(jsantrian);
+//        akhir memunculkan data
 
-//        tombol simpan
+
+        //    simpan data
         simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//           buka database
-            db=openOrCreateDatabase(dbname,MODE_PRIVATE,null);
-//            create database (membuat)
-            db.execSQL("CREATE table if not exists barang(kode varchar(20), nama varchar(20), satuan varchar(100),hbeli varchar(100), hjual varchar(100), diskon varchar(100));");
+                String url = "http://192.168.100.126/android/apiAndroid/insert.php?";
+                RequestQueue antri;
 
-//            masukkan nilai yang ada di edittext
-            kd = kode.getText().toString();
-            nm = nama.getText().toString();
-            st = satuan.getText().toString();
-            hb = hbeli.getText().toString();
-            hj = hjual.getText().toString();
-            dsk = diskon.getText().toString();
+                antri = Volley.newRequestQueue(getApplicationContext());
+                url = url + "kode_barang="+kode.getText().toString().trim()+"&nama_barang="+nama.getText().toString().trim()+
+                        "&satuan="+satuan.getText().toString().trim()+"&hbeli="+hbeli.getText().toString().trim()+"&hjual="+hjual.getText().toString().trim()+
+                        "&diskon="+diskon.getText().toString().trim();
 
-//            insert data ke database
-            db.execSQL("insert into barang values('"+ kd+"','"+ nm +"','"+ st +"','"+ hb +"','"+ hj +"','"+ dsk +"');");
-//            cursor
-            Cursor c = db.rawQuery("select * from barang", null);
-                kode11 = new String[c.getCount()];
-                nama11 = new String[c.getCount()];
-                satuan11 = new String[c.getCount()];
-                hbeli11 = new String[c.getCount()];
-                hjual11 = new int[c.getCount()];
-                diskon11 = new String[c.getCount()];
-                x=1;
-                    c.moveToFirst();
-                kode11[0] = c.getString(c.getColumnIndex("kode"));
-                nama11[0] = c.getString(c.getColumnIndex("nama"));
-                satuan11[0] = c.getString(c.getColumnIndex("satuan"));
-                hbeli11[0] = c.getString(c.getColumnIndex("hbeli"));
-                hjual11[0] = c.getInt(c.getColumnIndex("hjual"));
-                diskon11[0] = c.getString(c.getColumnIndex("diskon"));
-                while(c.moveToNext()){
-                    kode11[x] = c.getString(c.getColumnIndex("kode"));
-                    nama11[x] = c.getString(c.getColumnIndex("nama"));
-                    satuan11[x] = c.getString(c.getColumnIndex("satuan"));
-                    hbeli11[x] = c.getString(c.getColumnIndex("hbeli"));
-                    hjual11[x] = c.getInt(c.getColumnIndex("hjual"));
-                    diskon11[x] = c.getString(c.getColumnIndex("diskon"));
-                x = x+1;
-                }
-                db.close();
-                Ngisine xx = new Ngisine(getApplication(),kode11, nama11, satuan11, hbeli11, hjual11, diskon11);
-                isilist.setAdapter(xx);
-                update.setEnabled(true);
-                delete.setEnabled(true);
+                Toast.makeText(getApplicationContext(), url.toString(), Toast.LENGTH_SHORT).show();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), "sukses", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "gagal", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                antri.add(stringRequest);
             }
         });
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db=openOrCreateDatabase(dbname,MODE_PRIVATE,null);
+                String url = "http://192.168.100.126/android/apiAndroid/update.php?";
+                RequestQueue antri;
 
-                kd = kode.getText().toString();
-                nm = nama.getText().toString();
-                st = satuan.getText().toString();
-                hb = hbeli.getText().toString();
-                hj = hjual.getText().toString();
-                dsk = diskon.getText().toString();
+                antri = Volley.newRequestQueue(getApplicationContext());
+                url = url + "kode_barang="+kode.getText().toString().trim()+"&nama_barang="+nama.getText().toString().trim()+
+                        "&satuan="+satuan.getText().toString().trim()+"&hbeli="+hbeli.getText().toString().trim()+"&hjual="+hjual.getText().toString().trim()+
+                        "&diskon="+diskon.getText().toString().trim();
 
-                db.execSQL("update barang set nama = '"+ nm +"',satuan = '"+ st +"', hbeli = '"+ hb +"', hjual = '"+ hj +"', diskon = '"+ dsk +"' where kode = '"+ kd +"';");
-                Cursor c = db.rawQuery("select * from barang", null);
-                kode11 = new String[c.getCount()];
-                nama11 = new String[c.getCount()];
-                satuan11 = new String[c.getCount()];
-                hbeli11 = new String[c.getCount()];
-                hjual11 = new int[c.getCount()];
-                diskon11 = new String[c.getCount()];
-                x=1;
-                c.moveToFirst();
-                kode11[0] = c.getString(c.getColumnIndex("kode"));
-                nama11[0] = c.getString(c.getColumnIndex("nama"));
-                satuan11[0] = c.getString(c.getColumnIndex("satuan"));
-                hbeli11[0] = c.getString(c.getColumnIndex("hbeli"));
-                hjual11[0] = c.getInt(c.getColumnIndex("hjual"));
-                diskon11[0] = c.getString(c.getColumnIndex("diskon"));
-                while(c.moveToNext()){
-                    kode11[x] = c.getString(c.getColumnIndex("kode"));
-                    nama11[x] = c.getString(c.getColumnIndex("nama"));
-                    satuan11[x] = c.getString(c.getColumnIndex("satuan"));
-                    hbeli11[x] = c.getString(c.getColumnIndex("hbeli"));
-                    hjual11[x] = c.getInt(c.getColumnIndex("hjual"));
-                    diskon11[x] = c.getString(c.getColumnIndex("diskon"));
-                    x = x+1;
-                }
-                db.close();
-                Ngisine xx = new Ngisine(getApplication(),kode11, nama11, satuan11, hbeli11, hjual11, diskon11);
-                isilist.setAdapter(xx);
-                update.setEnabled(false);
-                delete.setEnabled(false);
+                Toast.makeText(getApplicationContext(), url.toString(), Toast.LENGTH_SHORT).show();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), "sukses", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "gagal", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                antri.add(stringRequest);
             }
         });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db=openOrCreateDatabase(dbname,MODE_PRIVATE,null);
+                String url = "http://192.168.100.126/android/apiAndroid/delete.php?";
+                RequestQueue antri;
 
-                kd = kode.getText().toString();
-                nm = nama.getText().toString();
-                st = satuan.getText().toString();
-                hb = hbeli.getText().toString();
-                hj = hjual.getText().toString();
-                dsk = diskon.getText().toString();
+                antri = Volley.newRequestQueue(getApplicationContext());
+                url = url + "kode_barang="+kode.getText().toString().trim();
 
-                db.execSQL("delete from barang where kode = '"+ kd +"';");
-                Cursor c = db.rawQuery("select * from barang", null);
-                kode11 = new String[c.getCount()];
-                nama11 = new String[c.getCount()];
-                satuan11 = new String[c.getCount()];
-                hbeli11 = new String[c.getCount()];
-                hjual11 = new int[c.getCount()];
-                diskon11 = new String[c.getCount()];
-                x=1;
-                c.moveToFirst();
-                kode11[0] = c.getString(c.getColumnIndex("kode"));
-                nama11[0] = c.getString(c.getColumnIndex("nama"));
-                satuan11[0] = c.getString(c.getColumnIndex("satuan"));
-                hbeli11[0] = c.getString(c.getColumnIndex("hbeli"));
-                hjual11[0] = c.getInt(c.getColumnIndex("hjual"));
-                diskon11[0] = c.getString(c.getColumnIndex("diskon"));
-                while(c.moveToNext()){
-                    kode11[x] = c.getString(c.getColumnIndex("kode"));
-                    nama11[x] = c.getString(c.getColumnIndex("nama"));
-                    satuan11[x] = c.getString(c.getColumnIndex("satuan"));
-                    hbeli11[x] = c.getString(c.getColumnIndex("hbeli"));
-                    hjual11[x] = c.getInt(c.getColumnIndex("hjual"));
-                    diskon11[x] = c.getString(c.getColumnIndex("diskon"));
-                    x = x+1;
-                }
-                db.close();
-                Ngisine xx = new Ngisine(getApplication(),kode11, nama11, satuan11, hbeli11, hjual11, diskon11);
-                isilist.setAdapter(xx);
-                update.setEnabled(false);
-                delete.setEnabled(false);
+                Toast.makeText(getApplicationContext(), url.toString(), Toast.LENGTH_SHORT).show();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), "sukses", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "gagal", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                antri.add(stringRequest);
             }
         });
 
@@ -239,25 +209,26 @@ public class MainActivity extends AppCompatActivity {
                 hjual.setText("");
                 hbeli.setText("");
                 diskon.setText("");
-                update.setEnabled(false);
-                delete.setEnabled(false);
+//                update.setEnabled(false);
+//                delete.setEnabled(false);
             }
         });
+
 
         isilist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this, kode11[i], Toast.LENGTH_SHORT).show();
-                kode.setText(kode11[i]);
-                nama.setText(nama11[i]);
-                satuan.setText(satuan11[i]);
-                hbeli.setText(hbeli11[i]);
-                hjual.setText(String.valueOf(hjual11[i]));
-                diskon.setText(diskon11[i]);
+                Toast.makeText(MainActivity.this, kode1[i], Toast.LENGTH_SHORT).show();
+                kode.setText(kode1[i]);
+                nama.setText(nama1[i]);
+                satuan.setText(satuan1[i]);
+                hbeli.setText(hbeli1[i]);
+                hjual.setText(String.valueOf(hjual1[i]));
+                diskon.setText(diskon1[i]);
                 update.setEnabled(true);
                 delete.setEnabled(true);
             }
         });
 
     }
-}
+    }
