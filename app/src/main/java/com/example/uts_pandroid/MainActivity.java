@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     Integer hjual1[];
     Integer hbeli1[];
     Integer diskon1[];
-    String alamaturl = "http://192.168.100.126/android/apiAndroid/index.php";
+    String alamaturl = "http://192.168.43.89/android/apiAndroid/index.php";
 
 
     @Override
@@ -79,25 +79,25 @@ public class MainActivity extends AppCompatActivity {
                             int jmlData = hasil.length();
                             String tampil;
                             tampil = "";
-                            String kode1[] = new String[jmlData];
-                            String nama1[] = new String[jmlData];
-                            String satuan1[] = new String[jmlData];
-                            Integer hbeli1[] = new Integer[jmlData];
-                            Integer hhjual1[] = new Integer[jmlData];
-                            Integer diskon1[] = new Integer[jmlData];
+                            kode1 = new String[jmlData];
+                            nama1 = new String[jmlData];
+                            satuan1 = new String[jmlData];
+                            hbeli1 = new Integer[jmlData];
+                            hjual1 = new Integer[jmlData];
+                            diskon1 = new Integer[jmlData];
                             for (int i = 0; i < jmlData; i++) {
                                 JSONObject kumpulandata = hasil.getJSONObject(i);
                                 kode1[i] = kumpulandata.getString("kode_barang");
                                 nama1[i] = kumpulandata.getString("nama_barang");
                                 satuan1[i] = kumpulandata.getString("satuan");
                                 hbeli1[i] = kumpulandata.getInt("hbeli");
-                                hhjual1[i] = kumpulandata.getInt("hjual");
+                                hjual1[i] = kumpulandata.getInt("hjual");
                                 diskon1[i] = kumpulandata.getInt("diskon");
                                 tampil =
-                                        tampil + "\n" + kode1 + " " + nama1 + " " + satuan1 + " " + hbeli1 + " " + hhjual1 +
+                                        tampil + "\n" + kode1 + " " + nama1 + " " + satuan1 + " " + hbeli1 + " " + hjual1 +
                                                 " " + diskon1;
                             }
-                            Ngisine adapter =new Ngisine(getApplication(), kode1, nama1, satuan1, hbeli1, hhjual1, diskon1);
+                            Ngisine adapter =new Ngisine(getApplication(), kode1, nama1, satuan1, hbeli1, hjual1, diskon1);
                             isilist.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://192.168.100.126/android/apiAndroid/insert.php?";
+                String url = "http://192.168.43.89/android/apiAndroid/insert.php?";
                 RequestQueue antri;
 
                 antri = Volley.newRequestQueue(getApplicationContext());
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://192.168.100.126/android/apiAndroid/update.php?";
+                String url = "http://192.168.43.89/android/apiAndroid/update.php?";
                 RequestQueue antri;
 
                 antri = Volley.newRequestQueue(getApplicationContext());
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://192.168.100.126/android/apiAndroid/delete.php?";
+                String url = "http://192.168.43.89/android/apiAndroid/delete.php?";
                 RequestQueue antri;
 
                 antri = Volley.newRequestQueue(getApplicationContext());
@@ -209,8 +209,8 @@ public class MainActivity extends AppCompatActivity {
                 hjual.setText("");
                 hbeli.setText("");
                 diskon.setText("");
-//                update.setEnabled(false);
-//                delete.setEnabled(false);
+                update.setEnabled(false);
+                delete.setEnabled(false);
             }
         });
 
@@ -222,9 +222,9 @@ public class MainActivity extends AppCompatActivity {
                 kode.setText(kode1[i]);
                 nama.setText(nama1[i]);
                 satuan.setText(satuan1[i]);
-                hbeli.setText(hbeli1[i]);
+                hbeli.setText(String.valueOf(hbeli1[i]));
                 hjual.setText(String.valueOf(hjual1[i]));
-                diskon.setText(diskon1[i]);
+                diskon.setText(String.valueOf(diskon1[i]));
                 update.setEnabled(true);
                 delete.setEnabled(true);
             }
