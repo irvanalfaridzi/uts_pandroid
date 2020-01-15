@@ -66,6 +66,131 @@ public class MainActivity extends AppCompatActivity {
         clear = (Button)findViewById(R.id.btnClear);
 
 //        memunculkan data
+        tampil();
+//        akhir memunculkan data
+
+
+        //    simpan data
+        simpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "http://192.168.43.89/android/apiAndroid/insert.php?";
+                RequestQueue antri;
+
+                antri = Volley.newRequestQueue(getApplicationContext());
+                url = url + "kode_barang="+kode.getText().toString().trim()+"&nama_barang="+nama.getText().toString().trim()+
+                        "&satuan="+satuan.getText().toString().trim()+"&hbeli="+hbeli.getText().toString().trim()+"&hjual="+hjual.getText().toString().trim()+
+                        "&diskon="+diskon.getText().toString().trim();
+
+                Toast.makeText(getApplicationContext(), url.toString(), Toast.LENGTH_SHORT).show();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), "sukses", Toast.LENGTH_SHORT).show();
+                        tampil();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "gagal", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                antri.add(stringRequest);
+
+            }
+        });
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "http://192.168.43.89/android/apiAndroid/update.php?";
+                RequestQueue antri;
+
+                antri = Volley.newRequestQueue(getApplicationContext());
+                url = url + "kode_barang="+kode.getText().toString().trim()+"&nama_barang="+nama.getText().toString().trim()+
+                        "&satuan="+satuan.getText().toString().trim()+"&hbeli="+hbeli.getText().toString().trim()+"&hjual="+hjual.getText().toString().trim()+
+                        "&diskon="+diskon.getText().toString().trim();
+
+                Toast.makeText(getApplicationContext(), url.toString(), Toast.LENGTH_SHORT).show();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), "sukses", Toast.LENGTH_SHORT).show();
+                        tampil();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "gagal", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                antri.add(stringRequest);
+
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "http://192.168.43.89/android/apiAndroid/delete.php?";
+                RequestQueue antri;
+
+                antri = Volley.newRequestQueue(getApplicationContext());
+                url = url + "kode_barang="+kode.getText().toString().trim();
+
+                Toast.makeText(getApplicationContext(), url.toString(), Toast.LENGTH_SHORT).show();
+
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), "sukses", Toast.LENGTH_SHORT).show();
+                        tampil();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "gagal", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                antri.add(stringRequest);
+
+            }
+        });
+
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                kode.setText("");
+                nama.setText("");
+                satuan.setText("");
+                hjual.setText("");
+                hbeli.setText("");
+                diskon.setText("");
+                update.setEnabled(false);
+                delete.setEnabled(false);
+            }
+        });
+
+
+        isilist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(MainActivity.this, kode1[i], Toast.LENGTH_SHORT).show();
+                kode.setText(kode1[i]);
+                nama.setText(nama1[i]);
+                satuan.setText(satuan1[i]);
+                hbeli.setText(String.valueOf(hbeli1[i]));
+                hjual.setText(String.valueOf(hjual1[i]));
+                diskon.setText(String.valueOf(diskon1[i]));
+                update.setEnabled(true);
+                delete.setEnabled(true);
+            }
+        });
+
+    }
+    public void tampil(){
         final JsonObjectRequest jsantrian;
         jsantrian = new JsonObjectRequest(Request.Method.POST, alamaturl, null,
                 new Response.Listener<JSONObject>() {
@@ -114,121 +239,5 @@ public class MainActivity extends AppCompatActivity {
 
         final RequestQueue antrian = Volley.newRequestQueue(this);
         antrian.add(jsantrian);
-//        akhir memunculkan data
-
-
-        //    simpan data
-        simpan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url = "http://192.168.43.89/android/apiAndroid/insert.php?";
-                RequestQueue antri;
-
-                antri = Volley.newRequestQueue(getApplicationContext());
-                url = url + "kode_barang="+kode.getText().toString().trim()+"&nama_barang="+nama.getText().toString().trim()+
-                        "&satuan="+satuan.getText().toString().trim()+"&hbeli="+hbeli.getText().toString().trim()+"&hjual="+hjual.getText().toString().trim()+
-                        "&diskon="+diskon.getText().toString().trim();
-
-                Toast.makeText(getApplicationContext(), url.toString(), Toast.LENGTH_SHORT).show();
-
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), "sukses", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "gagal", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                antri.add(stringRequest);
-            }
-        });
-
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url = "http://192.168.43.89/android/apiAndroid/update.php?";
-                RequestQueue antri;
-
-                antri = Volley.newRequestQueue(getApplicationContext());
-                url = url + "kode_barang="+kode.getText().toString().trim()+"&nama_barang="+nama.getText().toString().trim()+
-                        "&satuan="+satuan.getText().toString().trim()+"&hbeli="+hbeli.getText().toString().trim()+"&hjual="+hjual.getText().toString().trim()+
-                        "&diskon="+diskon.getText().toString().trim();
-
-                Toast.makeText(getApplicationContext(), url.toString(), Toast.LENGTH_SHORT).show();
-
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), "sukses", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "gagal", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                antri.add(stringRequest);
-            }
-        });
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url = "http://192.168.43.89/android/apiAndroid/delete.php?";
-                RequestQueue antri;
-
-                antri = Volley.newRequestQueue(getApplicationContext());
-                url = url + "kode_barang="+kode.getText().toString().trim();
-
-                Toast.makeText(getApplicationContext(), url.toString(), Toast.LENGTH_SHORT).show();
-
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), "sukses", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "gagal", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                antri.add(stringRequest);
-            }
-        });
-
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                kode.setText("");
-                nama.setText("");
-                satuan.setText("");
-                hjual.setText("");
-                hbeli.setText("");
-                diskon.setText("");
-                update.setEnabled(false);
-                delete.setEnabled(false);
-            }
-        });
-
-
-        isilist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this, kode1[i], Toast.LENGTH_SHORT).show();
-                kode.setText(kode1[i]);
-                nama.setText(nama1[i]);
-                satuan.setText(satuan1[i]);
-                hbeli.setText(String.valueOf(hbeli1[i]));
-                hjual.setText(String.valueOf(hjual1[i]));
-                diskon.setText(String.valueOf(diskon1[i]));
-                update.setEnabled(true);
-                delete.setEnabled(true);
-            }
-        });
-
     }
     }
